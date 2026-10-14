@@ -1,0 +1,13 @@
+name = "cell-theatre"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# Static assets are served straight from the edge; the Worker script itself only
+# adds the headers that a plain file host cannot set.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Free-plan Workers run on ~100k requests/day, which is plenty for a courseware.
+[observability]
+enabled = false
