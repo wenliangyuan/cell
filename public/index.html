@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>CELL · 生命微观剧场</title>
+<meta name="description" content="以自定义 GLSL 着色器、粒子流场与体积光构建的细胞生物学沉浸式演示" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%235ef3ff' stroke-width='1.5' opacity='.55'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%235ef3ff'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" />
+<link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <div id="stage">
+    <canvas id="gl"></canvas>
+    <div id="veil" class="veil"></div>
+    <div class="grain-overlay"></div>
+    <div class="scan-overlay"></div>
+    <div class="vignette-overlay"></div>
+  </div>
+
+  <!-- ── boot ─────────────────────────────────────────────────────────── -->
+  <div id="boot" class="boot">
+    <div class="boot__inner">
+      <div class="boot__mark">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="52" class="bm-ring" />
+          <circle cx="60" cy="60" r="34" class="bm-ring bm-ring--2" />
+          <circle cx="60" cy="60" r="13" class="bm-core" />
+        </svg>
+      </div>
+      <h1 class="boot__title">CELL</h1>
+      <p class="boot__sub">生命微观剧场 · 细胞结构与功能</p>
+      <div class="boot__bar"><i id="bootBar"></i></div>
+      <p class="boot__status" id="bootStatus">正在编译着色器…</p>
+      <button class="boot__enter" id="bootEnter" hidden>
+        <span>进入细胞</span>
+        <em>ENTER</em>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── HUD ──────────────────────────────────────────────────────────── -->
+  <div id="hud" class="hud" aria-hidden="true">
+
+    <header class="hud__top">
+      <div class="brand">
+        <span class="brand__glyph"></span>
+        <span class="brand__name">CELL</span>
+        <span class="brand__tag">MICRO&nbsp;THEATRE</span>
+      </div>
+      <div class="telemetry" id="telemetry">
+        <span><b id="tFps">–</b> FPS</span>
+        <span><b id="tParticles">–</b> MOTES</span>
+        <span><b id="tDepth">–</b> µm</span>
+      </div>
+    </header>
+
+    <!-- chapter rail (wide screens) -->
+    <nav class="rail" id="rail"></nav>
+
+    <!-- chapter dock (narrow screens: the rail is hidden there) -->
+    <nav class="dock" id="dock" aria-label="章节"></nav>
+
+    <!-- annotations anchored to 3D points -->
+    <div class="markers" id="markers"></div>
+
+    <!-- bottom readout -->
+    <footer class="hud__bottom">
+      <div class="chapter">
+        <div class="chapter__index" id="chapterIndex">00</div>
+        <div class="chapter__body">
+          <h2 class="chapter__title" id="chapterTitle">细胞全景</h2>
+          <p class="chapter__latin" id="chapterLatin">THE CELL</p>
+        </div>
+      </div>
+      <div class="caption" id="caption">
+        <p class="caption__text" id="captionText"></p>
+      </div>
+      <div class="transport">
+        <div class="transport__time"><b id="timeNow">00:00</b><i>/</i><span id="timeAll">00:00</span></div>
+        <div class="transport__keys">
+          <span><kbd>←</kbd><kbd>→</kbd> 切换章节</span>
+          <span><kbd>R</kbd> 重置</span>
+          <span><kbd>F</kbd> 全屏</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="hint" class="hint">拖动旋转视角 · 滚轮缩放 · ← → 切换章节</div>
+  <div id="fatal" class="fatal" hidden><h2>无法启动</h2><pre id="fatalMsg"></pre></div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
